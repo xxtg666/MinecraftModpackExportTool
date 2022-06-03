@@ -8,6 +8,7 @@ import json
 import shutil
 import getpass
 import zipfile
+import webbrowser as wb
 
 
 def make_zip(dirpath, outFullName):
@@ -36,6 +37,8 @@ class mmet(QMainWindow, Ui_MainWindow):
         self.pb_s2.clicked.connect(self.on_pb_s2)
         self.cb_s3_all.clicked.connect(self.on_cb_s3_all)
         self.pushButton.clicked.connect(self.on_export_clicked)
+        self.action_MMET.triggered.connect(self.show_about)
+        self.action_GitHub.triggered.connect(self.open_github)
         self.setWindowIcon(iconFromBase64("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAgklEQVQ4y2NgGLTAxcXlPzomSTMI3Lhx4//BgwfBGMQGiXuaif7P8JP7T5QhEhIScAwzqDNd/b+GHPd/kr0EshnmIpCBJGsGORtkM8w7RBsC0ozsbJh3iDIA2WaYGNEGoNuMbABBL2CzGdkAEMBpAC6b0Q0h2WaSQ5tkANJItmZKAABzO4WhWjcV2gAAAABJRU5ErkJggg=="))
         self.show()
 
@@ -157,6 +160,13 @@ class mmet(QMainWindow, Ui_MainWindow):
             self.on_export()
         except Exception as e:
             QMessageBox.critical(self, "导出失败", str(e))
+
+    def show_about(self):
+        QMessageBox.about(
+            self, "关于 MMET", "<strong>MinecraftModpackExportTool</strong><hr><p>作者: xxtg666</p><p>版本 1.0.3</p>")
+
+    def open_github(self):
+        wb.open("https://github.com/xxtg666/MinecraftModpackExportTool")
 
 
 if __name__ == "__main__":
