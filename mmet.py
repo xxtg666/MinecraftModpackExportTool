@@ -2,6 +2,7 @@ import sys
 import os
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
+from PySide2.QtGui import *
 from ui_mmet import Ui_MainWindow
 import json
 import shutil
@@ -19,6 +20,13 @@ def make_zip(dirpath, outFullName):
     zip.close()
 
 
+def iconFromBase64(base64):
+    pixmap = QPixmap()
+    pixmap.loadFromData(QByteArray.fromBase64(base64.encode()))
+    icon = QIcon(pixmap)
+    return icon
+
+
 class mmet(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
@@ -28,6 +36,7 @@ class mmet(QMainWindow, Ui_MainWindow):
         self.pb_s2.clicked.connect(self.on_pb_s2)
         self.cb_s3_all.clicked.connect(self.on_cb_s3_all)
         self.pushButton.clicked.connect(self.on_export_clicked)
+        self.setWindowIcon(iconFromBase64("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAgklEQVQ4y2NgGLTAxcXlPzomSTMI3Lhx4//BgwfBGMQGiXuaif7P8JP7T5QhEhIScAwzqDNd/b+GHPd/kr0EshnmIpCBJGsGORtkM8w7RBsC0ozsbJh3iDIA2WaYGNEGoNuMbABBL2CzGdkAEMBpAC6b0Q0h2WaSQ5tkANJItmZKAABzO4WhWjcV2gAAAABJRU5ErkJggg=="))
         self.show()
 
     def on_setup(self):
@@ -85,10 +94,10 @@ class mmet(QMainWindow, Ui_MainWindow):
             with open(PCL_ini_path, "r", encoding="utf-8") as f:
                 ini = f.readlines()
                 for i in range(len(ini)):
-                    if ini[i][:14]=="VersionFabric:":
-                        ini_fabric_line=i
-                    if ini[i][:13]=="VersionForge:":
-                        ini_forge_line=i
+                    if ini[i][:14] == "VersionFabric:":
+                        ini_fabric_line = i
+                    if ini[i][:13] == "VersionForge:":
+                        ini_forge_line = i
                 VersionFabric = ini[ini_fabric_line].replace(
                     "VersionFabric:", "").replace("\n", "")
                 VersionForge = ini[ini_forge_line].replace(
