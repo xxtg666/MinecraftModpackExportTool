@@ -84,9 +84,14 @@ class mmet(QMainWindow, Ui_MainWindow):
         else:
             with open(PCL_ini_path, "r", encoding="utf-8") as f:
                 ini = f.readlines()
-                VersionFabric = ini[6].replace(
+                for i in range(len(ini)):
+                    if ini[i][:14]=="VersionFabric:":
+                        ini_fabric_line=i
+                    if ini[i][:13]=="VersionForge:":
+                        ini_forge_line=i
+                VersionFabric = ini[ini_fabric_line].replace(
                     "VersionFabric:", "").replace("\n", "")
-                VersionForge = ini[9].replace(
+                VersionForge = ini[ini_forge_line].replace(
                     "VersionForge:", "").replace("\n", "")
                 if VersionFabric != "":
                     loader_version = "fabric-"+VersionFabric
