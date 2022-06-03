@@ -109,13 +109,13 @@ class mmet(QMainWindow, Ui_MainWindow):
         e_saves = self.cb_s3_saves.isChecked()
         e_shaderpacks = self.cb_s3_shaderpacks.isChecked()
         e_all = self.cb_s3_all.isChecked()
-        os.mkdir("temp")
-        os.mkdir("temp"+os.sep+"overrides")
         manifest_json = {"minecraft": {"version": client_version, "modLoaders": [{"id": loader_version, "primary": True}]}, "manifestType": "minecraftModpack",
                          "manifestVersion": 1, "name": self.game_version, "version": "1.0.0", "author": "MinecraftModpackExportTool "+getpass.getuser(), "files": [], "overrides": "overrides"}
+        os.mkdir("temp")
         json.dump(manifest_json, open("temp"+os.sep +
                   "manifest.json", "w", encoding="utf-8"))
         if not e_all:
+            os.mkdir("temp"+os.sep+"overrides")
             shutil.copytree(game_folder_path+os.sep+"mods",
                             "temp"+os.sep+"overrides"+os.sep+"mods")
             if e_config:
