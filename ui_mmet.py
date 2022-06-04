@@ -17,11 +17,13 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(339, 449)
+        MainWindow.resize(339, 471)
         self.action_MMET = QAction(MainWindow)
         self.action_MMET.setObjectName(u"action_MMET")
         self.action_GitHub = QAction(MainWindow)
         self.action_GitHub.setObjectName(u"action_GitHub")
+        self.action_2 = QAction(MainWindow)
+        self.action_2.setObjectName(u"action_2")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_5 = QVBoxLayout(self.centralwidget)
@@ -150,6 +152,8 @@ class Ui_MainWindow(object):
         self.menuBar.addAction(self.menu.menuAction())
         self.menu.addAction(self.action_MMET)
         self.menu.addAction(self.action_GitHub)
+        self.menu.addSeparator()
+        self.menu.addAction(self.action_2)
 
         self.retranslateUi(MainWindow)
 
@@ -160,6 +164,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Minecraft\u6574\u5408\u5305\u5bfc\u51fa\u5de5\u5177", None))
         self.action_MMET.setText(QCoreApplication.translate("MainWindow", u"\u5173\u4e8e MMET", None))
         self.action_GitHub.setText(QCoreApplication.translate("MainWindow", u"GitHub", None))
+        self.action_2.setText(QCoreApplication.translate("MainWindow", u"Bug\u6c47\u62a5", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"\u7b2c\u4e00\u6b65", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"\u9009\u62e9\u4f60\u7684 versions \u6587\u4ef6\u5939\uff08\u8bf7\u5f00\u542f\u7248\u672c\u9694\u79bb\uff09", None))
         self.pb_s1.setText(QCoreApplication.translate("MainWindow", u"\u70b9\u51fb\u6b64\u5904", None))

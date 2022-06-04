@@ -1,5 +1,6 @@
 import sys
 import os
+from tkinter import E
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
@@ -9,6 +10,7 @@ import shutil
 import getpass
 import zipfile
 import webbrowser as wb
+import traceback
 
 
 def make_zip(dirpath, outFullName):
@@ -39,6 +41,7 @@ class mmet(QMainWindow, Ui_MainWindow):
         self.pushButton.clicked.connect(self.on_export_clicked)
         self.action_MMET.triggered.connect(self.show_about)
         self.action_GitHub.triggered.connect(self.open_github)
+        self.action_2.triggered.connect(self.bug_report)
         self.setWindowIcon(iconFromBase64("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAgklEQVQ4y2NgGLTAxcXlPzomSTMI3Lhx4//BgwfBGMQGiXuaif7P8JP7T5QhEhIScAwzqDNd/b+GHPd/kr0EshnmIpCBJGsGORtkM8w7RBsC0ozsbJh3iDIA2WaYGNEGoNuMbABBL2CzGdkAEMBpAC6b0Q0h2WaSQ5tkANJItmZKAABzO4WhWjcV2gAAAABJRU5ErkJggg=="))
         self.show()
 
@@ -89,11 +92,9 @@ class mmet(QMainWindow, Ui_MainWindow):
         QMessageBox.information(
             self, "准备导出", "按下 [OK] 以开始导出\n导出时可能会未响应,请耐心等待!")
         game_folder_path = self.versions_path+os.sep+self.game_version
+        game_json_path = game_folder_path+os.sep+self.game_version+".json"
         PCL_ini_path = game_folder_path+os.sep+"PCL"+os.sep+"Setup.ini"
-        if not os.path.exists(PCL_ini_path):
-            loader_version = QInputDialog.getText(
-                self, '输入mod加载器信息', '无法自动读取mod加载器信息\n请手动输入mod加载器名称及其版本\n例如: fabric-0.13.2')
-        else:
+        if os.path.exists(PCL_ini_path):
             with open(PCL_ini_path, "r", encoding="utf-8") as f:
                 ini = f.readlines()
                 for i in range(len(ini)):
@@ -109,10 +110,23 @@ class mmet(QMainWindow, Ui_MainWindow):
                     loader_version = "fabric-"+VersionFabric
                 else:
                     loader_version = "forge-"+VersionForge
-        game_json_path = game_folder_path+os.sep+self.game_version+".json"
-        with open(game_json_path, "r", encoding="utf-8") as f:
-            game_json = json.load(f)
-            client_version = game_json["clientVersion"]
+            with open(game_json_path, "r", encoding="utf-8") as f:
+                game_json = json.load(f)
+                client_version = game_json["clientVersion"]
+        else:
+            try:
+                with open(game_json_path, "r", encoding="utf-8") as f:
+                    game_json = json.load(f)
+                    loader_version = game_json["patches"][1]["id"] + \
+                        "-"+game_json["patches"][1]["version"]
+            except:
+                loader_version = QInputDialog.getText(
+                    self, '输入mod加载器信息', '无法自动读取mod加载器信息\n请手动输入mod加载器名称及其版本\n例如: fabric-0.14.6')
+            try:
+                client_version = game_json["patches"][0]["version"]
+            except:
+                client_version = QInputDialog.getText(
+                    self, '输入游戏版本信息', '无法自动读取游戏版本信息\n请手动输入游戏版本\n例如: 1.16.5')
         # QMessageBox.information(self,"debug",f"loader_version:{loader_version}\nclient_version:{client_version}\nVersionFabric:{VersionFabric}\nVersionForge:{VersionForge}")
         e_config = self.cb_s3_config.isChecked()
         e_servers = self.cb_s3_servers.isChecked()
@@ -159,14 +173,20 @@ class mmet(QMainWindow, Ui_MainWindow):
         try:
             self.on_export()
         except Exception as e:
-            QMessageBox.critical(self, "导出失败", str(e))
+            back = traceback.format_exc()
+            back=back.replace("\n","<br>").replace(" ","&nbsp;")
+            QMessageBox.critical(self, "导出失败", back+"<hr>你可以去此项目的 GitHub 上寻求帮助！")
+            shutil.rmtree("temp")
 
     def show_about(self):
         QMessageBox.about(
-            self, "关于 MMET", "<strong>MinecraftModpackExportTool</strong><hr><p>作者: xxtg666</p><p>版本 1.0.3</p>")
+            self, "关于 MMET", "<strong>MinecraftModpackExportTool</strong><hr><p>作者: xxtg666</p><p>版本 1.0.4</p>")
 
     def open_github(self):
         wb.open("https://github.com/xxtg666/MinecraftModpackExportTool")
+
+    def bug_report(self):
+        wb.open("https://github.com/xxtg666/MinecraftModpackExportTool/issues")
 
 
 if __name__ == "__main__":

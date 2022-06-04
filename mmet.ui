@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>339</width>
-    <height>449</height>
+    <height>471</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -186,6 +186,8 @@
     </property>
     <addaction name="action_MMET"/>
     <addaction name="action_GitHub"/>
+    <addaction name="separator"/>
+    <addaction name="action_2"/>
    </widget>
    <addaction name="menu"/>
   </widget>
@@ -197,6 +199,11 @@
   <action name="action_GitHub">
    <property name="text">
     <string>GitHub</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>Bug汇报</string>
    </property>
   </action>
  </widget>
