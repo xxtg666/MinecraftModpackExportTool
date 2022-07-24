@@ -169,6 +169,12 @@ class mmet(QMainWindow, Ui_MainWindow):
                                 "mmet_temp"+os.sep+"overrides"+os.sep+"shaderpacks")
         else:
             shutil.copytree(self.game_folder_path, "mmet_temp"+os.sep+"overrides")
+            try:
+                shutil.rmtree("mmet_temp"+os.sep+"overrides" +os.sep+"PCL")
+            except:
+                pass
+            os.remove("mmet_temp"+os.sep+"overrides" +os.sep+self.game_version+".jar")
+            os.remove("mmet_temp"+os.sep+"overrides" +os.sep+self.game_version+".json")
         if os.path.exists("mmet_temp"+os.sep+"overrides"+os.sep+"config"+os.sep+"ias.json"):
             r = QMessageBox.warning(
                 self, "盗号警告", "<h3>是否忽略ias.json?</h3><hr>由于你在整合包中使用了此mod:<br><strong>[游戏内账号切换]InGameAccountSwitcher</strong><br>你的账号登录信息会被储存在配置文件<strong>ias.json</strong>中<br><strong><font color=\"red\">如果你登录了正版，在整合包内保留将会导致别人登上你的账号！</font></strong>", QMessageBox.Yes | QMessageBox.No)
@@ -194,7 +200,7 @@ class mmet(QMainWindow, Ui_MainWindow):
 
     def show_about(self):
         QMessageBox.about(
-            self, "关于 MMET", "<strong>MinecraftModpackExportTool</strong><hr><p>作者: xxtg666</p><p>版本 1.0.5</p>")
+            self, "关于 MMET", "<strong>MinecraftModpackExportTool</strong><hr><p>作者: xxtg666</p><p>版本 1.0.6</p>")
 
     def open_github(self):
         wb.open("https://github.com/xxtg666/MinecraftModpackExportTool")
